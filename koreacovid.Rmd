@@ -1,7 +1,7 @@
 ---
 title: "Initial Korean covid 19"
-author: "your name here"
-date: "todays date"
+author: "Andrea Calderon"
+date: "Spring 2024"
 output:
   html_document: default
   pdf_document: default
@@ -18,8 +18,7 @@ kRdata <- kRdata %>%
 mutate(across(where(is.character), as.factor))
 
 ```
-### Data is from the Patient_Info dataset from South Korea 1 Jan to 1 May 2020
-### This data was retrieved from a downloadable zip file from kaggle
+ Data is from the Patient_Info dataset from South Korea 1 Jan to 1 May 2020 This data was retrieved from a downloadable zip file from kaggle
 
 Some of the data was uncoded for sex - sex must be just male or female
 77 of the data entries were coded sex  as blank, so we omit these.
@@ -27,29 +26,63 @@ state of a patient must be died or alive - we adjust that as well
   
 # Your Question - Is dying independent of sex?
 
+# Introduction 
 
+$H_0$ There is no difference in death rate based on sex
 
+$H_A$ There is a difference in death rates based on sex
 
+# Method
+Variables for this study are Sex and results.
+
+We want to know if results depend on Sex.
+result is a categorical variable.
+Sex is also a categorical variable 
+
+so we use Cat ~ Cat helper file
+
+# Results 
 
 
 ## Graphical results - use ggplot commands to do this  
 
+```{r}
+barchartGC(~result + Sex,data=kRdata)
+barchartGC(~result + Sex,data=kRdata, type="percent")
 
+```
+
+This chart shows that males are more likely to die with average being at 60 percent and female being below 40 percent.
 
   
-
-
-
 
 
   
 ## Numerical results
 
+```{r}
+table1 <- xtabs(~result + Sex, data=kRdata)
+rowPerc(table1)
+colPerc(table1)
+```
+
+
+The table shows that average male deaths are higher than female deaths at 64 deaths versus female deaths at 36. 
 
 ## Inferential results 
 
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+The Chi-squared test p-value is 0.01 which is lesser than 0.05 which means we can effectively reject the null hypothesis this means there is significant difference in death rate based on sex. 
 
+P-value on the fisher exact test is 0.009, we can reject the null hypothesis because the value is less than 0.05
+
+The odds ratio is 2.3:1. What this means is that the higger the odds are to prove that men do have a higher rate of deaths that what women have.
 
 
 ## Conclusions
 
+The question states is there a difference in Korean data death rates based on Sex? With the the graphs of numerical and graphical results it indicates there is a difference between sex and death rates, men have a higher mortality rate than women and we were able to prove that within all the our evidence of graphs and our chi-squared p-value = 0.01 which is less than 0.05 which gives us help to reject the null hypothesis and prove there is a difference in Sex and death rates. 
